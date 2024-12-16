@@ -2,7 +2,7 @@
 
 Este proyecto consta de dos componentes principales:
 
-1. **Backend**: Un servidor construido en Node.js que utiliza WebSockets para la comunicación en tiempo real. También implementa una cola de datos para gestionar mensajes o eventos.
+1. **Backend**: Un servidor construido en Node.js que utiliza WebSockets para la comunicación en tiempo real. También implementa una cola de datos para gestionar mensajes o eventos. 
 2. **Frontend**: Una página estática que actúa como cliente, conectándose al backend a través de WebSockets. La página debe ser servida por un servidor web para funcionar correctamente.
 
 ---
