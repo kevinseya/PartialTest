@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente WebSocket con Historial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        #inputNumber {
+            width: calc(100% - 20px);
+            max-width: 300px;
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            font-size: 16px;
+        }
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #respuesta {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+        #historial {
+            margin: 20px auto;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: calc(100% - 40px);
+            max-width: 600px;
+        }
+        #historial h3 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        #historial p {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+        #historial p:nth-child(odd) {
+            background-color: #e7f4e7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cliente WebSocket</h1>
+    <input type="number" id="inputNumber" placeholder="Escribe un número">
+    <button onclick="enviarMensaje()">Enviar</button>
+    <p id="respuesta"></p>
+    <div id="historial">
+        <h3>Historial</h3>
+    </div>
+
+    <script>
+        // Establecer la conexión WebSocket
+        const socket = new WebSocket('ws://<tu-ip-ec2>:8080');
+
+        // Evento cuando el WebSocket se conecta
+        socket.onopen = function() {
+            console.log("Conexión WebSocket establecida.");
+        };
+
+        // Evento cuando recibimos un mensaje del servidor
+        socket.onmessage = function(event) {
+            const respuesta = event.data;
+            document.getElementById("respuesta").textContent = "Respuesta del servidor: " + respuesta;
+            agregarAlHistorial("Respuesta del servidor: " + respuesta);
+        };
+
+        // Enviar mensaje al servidor
+        function enviarMensaje() {
+            const numero = document.getElementById("inputNumber").value;
+            if (numero) {
+                socket.send(numero); // Enviar el número al servidor
+                agregarAlHistorial("Mensaje enviado: " + numero);
+            }
+        }
+
+        // Función para agregar mensajes al historial
+        function agregarAlHistorial(mensaje) {
+            const historialDiv = document.getElementById("historial");
+            const nuevoParrafo = document.createElement("p");
+            nuevoParrafo.textContent = mensaje;
+            historialDiv.appendChild(nuevoParrafo);
+
+            // Asegurar que el historial siempre muestre los últimos mensajes
+            historialDiv.scrollTop = historialDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
