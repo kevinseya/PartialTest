@@ -23,7 +23,12 @@ function processQueue() {
     clients.forEach((client) => {
       // Ensure the client is ready to receive messages
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ type: 'chat', message })); // Send message to all clients
+        client.send(
+            JSON.stringify({
+              type: 'chat',
+              message: message.toString() // Convert Buffer to String
+            })
+          ); // Send message to all clients
       }
     });
     setTimeout(processQueue, 1000); // Wait 1 second before processing the next message
