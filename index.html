@@ -96,8 +96,8 @@
         // Evento cuando recibimos un mensaje del servidor
         socket.onmessage = function(event) {
             const respuesta = event.data;
-            document.getElementById("respuesta").textContent = "Respuesta del servidor: " + respuesta;
-            agregarAlHistorial("Respuesta del servidor: " + respuesta);
+            document.getElementById("respuesta").textContent = "Respuesta: " + respuesta;
+            agregarAlHistorial("Respuesta: " + respuesta);
         };
 
         // Enviar mensaje al servidor
